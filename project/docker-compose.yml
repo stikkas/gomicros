@@ -23,3 +23,20 @@ services:
     deploy:
       mode: replecated
       replicas: 1
+    environment:
+      DSN: "host=db port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5"
+
+  db:
+    image: 'postgres:14.0'
+    ports:
+      - "5432:5432"
+    restart: always
+    deploy:
+      mode: replecated
+      replicas: 1
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: users
+    volumes:
+      - ./db-data/postgres/:/var/lib/postgresql/data
