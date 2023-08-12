@@ -46,8 +46,7 @@ func main() {
 	app := Config{
 		Models: data.New(client),
 	}
-
-	go app.serve()
+	app.serve()
 }
 
 func (app *Config) serve() {
