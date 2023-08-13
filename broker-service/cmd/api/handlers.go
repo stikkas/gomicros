@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 )
@@ -58,6 +59,7 @@ func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
 	logServiceURL := "http://logger-service/log"
 	request, err := http.NewRequest("POST", logServiceURL, bytes.NewBuffer(jsonData))
 	if err != nil {
+		fmt.Println(err)
 		app.errorJSON(w, err)
 		return
 	}
@@ -70,8 +72,9 @@ func (app *Config) logItem(w http.ResponseWriter, entry LogPayload) {
 		return
 	}
 	defer response.Body.Close()
+
 	if response.StatusCode != http.StatusAccepted {
-		app.errorJSON(w, err)
+		app.errorJSON(w, errors.New("Wrong status from logger-service"))
 		return
 	}
 
