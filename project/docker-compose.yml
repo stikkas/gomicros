@@ -22,6 +22,24 @@ services:
       mode: replecated
       replicas: 1
 
+  mailer-service:
+    build:
+      context: ./../mail-service
+      dockerfile: ./../mail-service/mail-service.dockerfile
+    restart: always
+    deploy:
+      mode: replecated
+      replicas: 1
+    environment:
+      MAIL_DOMAIN: localhost
+      MAIL_HOST: mailhog
+      MAIL_PORT: 1025
+      MAIL_ENCRYPTION: none
+      MAIL_USERNAME: ""
+      MAIL_PASSWORD: ""
+      FROM_NAME: "John Smith"
+      FROM_ADDRESS: john.smith@example.com
+
   authentication-service:
     build:
       context: ./../authentication-service
@@ -56,8 +74,6 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_DATABASE: logs
-      # MONGO_INITDB_USERNAME: admin
-      # MONGO_INITDB_PASSWORD: password
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: password
     volumes:
