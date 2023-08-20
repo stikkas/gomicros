@@ -53,6 +53,14 @@ services:
     environment:
       DSN: "host=db port=5432 user=postgres password=postgres dbname=users sslmode=disable timezone=UTC connect_timeout=5"
 
+  listener-service:
+    build:
+      context: ./../listener-service
+      dockerfile: ./../listener-service/listener-service.dockerfile
+    deploy:
+      mode: replecated
+      replicas: 1
+
   db:
     image: 'postgres:14.0'
     ports:
@@ -84,3 +92,13 @@ services:
     ports:
       - "1025:1025"
       - "8025:8025"
+
+  rabbitmq:
+    image: rabbitmq:alpine
+    ports:
+      - "5672:5672"
+    deploy:
+      mode: replecated
+      replicas: 1
+    volumes:
+      - ./db-data/rabbitmq/:/var/lib/rabbitmq/
