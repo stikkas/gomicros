@@ -10,6 +10,7 @@
                 <button type="button" class="btn btn-outline-secondary" onclick="testAuth()">Test Auth</button>
                 <button type="button" class="btn btn-outline-secondary" onclick="testLog()">Test Log</button>
                 <button type="button" class="btn btn-outline-secondary" onclick="testMail()">Test Mail</button> 
+                <button type="button" class="btn btn-outline-secondary" onclick="testGRPC()">Test gRPC</button> 
                 <div id="output" class="mt-5" style="outline: 1px solid silver; padding: 2em;">
                     <span class="text-muted">Output shows here...</span>
                 </div>
@@ -82,6 +83,20 @@
             }
 
             fetch("http://localhost:8080/handle", createBody(payload)).then(resp => resp.json())
+                .then(data => updateOutput(payload, data))
+                .catch(err => updateError(err));
+        }
+
+        function testGRPC() {
+            const payload = {
+                action: "log",
+                log: {
+                    name: "Serge",
+                    data: "Some gRPC data"
+                }
+            };
+
+            fetch("http://localhost:8080/log-grpc", createBody(payload)).then(resp => resp.json())
                 .then(data => updateOutput(payload, data))
                 .catch(err => updateError(err));
         }

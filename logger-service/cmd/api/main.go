@@ -52,6 +52,7 @@ func main() {
 	// Register the RPC Server
 	err = rpc.Register(new(RPCServer))
 	go app.rpcListen()
+	go app.gRPCListen()
 
 	app.serve()
 }
@@ -97,3 +98,5 @@ func connectToMongo() (*mongo.Client, error) {
 	}
 	return c, nil
 }
+
+// protoc *.proto --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative --proto_path=.
